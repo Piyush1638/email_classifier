@@ -35,10 +35,10 @@ const Emails = ({ id, from, subject, message, category }) => {
           Subject: <span className="text-gray-400">{subject}</span>
         </p>
         <div className="flex items-center  gap-2">
-          <p className="text-lg font-bold text-justify">
-            Message:{" "}
+          <div className="text-lg font-bold break-words w-full">
+             <p>Message:{" "}</p>
             <span className="text-gray-300 font-normal">{message}</span>
-          </p>
+          </div>
         </div>
         <p
           className={`${getCategoryColor(
