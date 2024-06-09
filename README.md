@@ -27,13 +27,13 @@ http://localhost:3000/api/auth/callback/google
 Add the following keys to your `.env` file:
 
 ```
-API_KEY="Your API Key"
-GOOGLE_CLIENT_SECRET="Your Google Client Secret"
-GOOGLE_CLIENT_ID="Your Google Client ID"
-AUTH_SECRET="Your Auth Secret"
+NEXT_PUBLIC_API_KEY="Your API Key"
+NEXT_PUBLIC_GOOGLE_CLIENT_SECRET="Your Google Client Secret"
+NEXT_PUBLIC_GOOGLE_CLIENT_ID="Your Google Client ID"
+NEXT_PUBLIC_AUTH_SECRET="Your Auth Secret"
 ```
 
-You can get your `AUTH_SECRET` by running:
+You can get your `NEXT_PUBLIC_AUTH_SECRET` by running:
 ```bash
 npx auth secret
 ```
