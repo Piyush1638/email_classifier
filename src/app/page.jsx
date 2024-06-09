@@ -1,17 +1,16 @@
 import LoginButton from "@/components/LoginButton";
 import LogoutButton from "@/components/LogoutButton";
 import { auth } from "@/auth";
-import BackgroundAnimations from "@/components/BackgroundAnimations"
+import BackgroundAnimations from "@/components/BackgroundAnimations";
+import Link from "next/link";
 
 const Home = async () => {
   const session = await auth();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
-
-    {/* This are for just animations */}
-    <BackgroundAnimations/>
-   
+      {/* This are for just animations */}
+      <BackgroundAnimations />
 
       <div className="my-24 flex flex-col gap-4">
         <div class="w-max">
@@ -19,13 +18,19 @@ const Home = async () => {
             Welcom to <span className="text-purple-500">Email Classifier</span>
           </h1>
         </div>
-        <p className="text-center">Please signin to access!</p>
+
         {session ? (
           <div className="w-full text-center my-5">
+            <Link href="/home">Go Home</Link>
             <LogoutButton />
           </div>
         ) : (
-          <LoginButton />
+          <>
+            <p className="text-white text-center">
+              Please Signin to access!
+            </p>
+            <LoginButton />
+          </>
         )}
       </div>
     </main>
@@ -33,6 +38,3 @@ const Home = async () => {
 };
 
 export default Home;
-
-
-

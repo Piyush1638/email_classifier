@@ -5,14 +5,10 @@ import Image from "next/image";
 import LogoutButton from "@/components/LogoutButton";
 import GetAllMails from "@/components/GetAllMails";
 import Link from "next/link";
-import BackgroundAnimations from "@/components/BackgroundAnimations";
 
 const page = async () => {
   const session = await auth();
   if (!session?.user) redirect("/");
-  // console.log(session);
-  // console.log("Session Accesstoken: ", session.accessToken);
-  // console.log("Session RefreshToken: ", session.refreshToken);
   return (
     <main className="min-h-screen p-10 xl:py-24 flex flex-col gap-10 ">
       <h1 className="lg:text-3xl md:text-2xl text-lg font-bold text-center font-Gwendolyn">

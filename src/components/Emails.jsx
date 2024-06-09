@@ -26,20 +26,26 @@ const Emails = ({ id, from, subject, message, category }) => {
       <Link
         href={`https://mail.google.com/mail/u/0/#inbox/${id}`}
         target="_blank"
-        className=""
+        className="flex flex-col gap-2"
       >
-        <p className="text-purple-500 text-sm md:text-base my-3">From: {from}</p>
+        <p className="text-purple-500 text-sm md:text-base my-3">
+          From: {from}
+        </p>
         <p>
           Subject: <span className="text-gray-400">{subject}</span>
         </p>
-        <div className="flex items-center gap-2">
-          <p className="text-lg font-bold">Message:</p>{" "}
-          <p className="text-gray-300">{message}</p>
+        <div className="flex items-center  gap-2">
+          <p className="text-lg font-bold text-justify">
+            Message:{" "}
+            <span className="text-gray-300 font-normal">{message}</span>
+          </p>
         </div>
         <p
           className={`${getCategoryColor(
             category
-          )} absolute -top-3 bg-black right-0 md:right-10 px-2 py-1 border rounded-md text-xs md:text-base w-[7rem] text-center ${category ? "inline-block" : "hidden"}`}
+          )} absolute -top-3 bg-black right-0 md:right-10 px-2 py-1 border rounded-md text-xs md:text-base w-[7rem] text-center ${
+            category ? "inline-block" : "hidden"
+          }`}
         >
           {category}
         </p>
