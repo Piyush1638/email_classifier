@@ -8,7 +8,7 @@ import {
   HarmBlockThreshold,
 } from "@google/generative-ai";
 import Emails from "./Emails";
-import Loading from "./Loading"
+import Loading from "./Loading";
 
 const MODEL_NAME = "gemini-1.0-pro";
 
@@ -18,9 +18,29 @@ const GetAllMails = ({ accessToken }) => {
   const [apiKey, setApiKey] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [rangeValue, setRangeValue] = useState(10); // Set initial value to 10
+  const [classifiedEmails, setClassifiedEmails] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    // This code will only run on the client side
+    const storedApiKey = localStorage.getItem("apiKey");
+    const storedClassifiedEmails = JSON.parse(localStorage.getItem("classifiedEmails"));
+
+    if (storedApiKey) {
+      setApiKey(storedApiKey);
+      setShowInput(false);
+    } else {
+      setShowInput(true);
+    }
+
+    if (storedClassifiedEmails) {
+      setClassifiedEmails(storedClassifiedEmails);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchEmails = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://www.googleapis.com/gmail/v1/users/me/messages?maxResults=${rangeValue}`,
@@ -60,11 +80,17 @@ const GetAllMails = ({ accessToken }) => {
   const classifyEmails = async () => {
     try {
       setLoading(true);
+
+      // Update localStorage with the new API key
+      localStorage.setItem("apiKey", apiKey);
+
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-      const classifiedEmails = await Promise.all(
-        emails.map(async (email) => {
+      const newEmailsToClassify = emails.slice(classifiedEmails.length, classifiedEmails.length + 15);
+
+      const newClassifiedEmails = await Promise.all(
+        newEmailsToClassify.map(async (email) => {
           const prompt = `
           Classify the following email into one of these categories: 
           Important: Emails that are personal or work-related and require immediate attention.
@@ -131,16 +157,31 @@ const GetAllMails = ({ accessToken }) => {
         })
       );
 
-      setEmails(classifiedEmails);
+      const updatedClassifiedEmails = [...classifiedEmails, ...newClassifiedEmails];
+
+      // Update local storage with new classified emails
+      localStorage.setItem("classifiedEmails", JSON.stringify(updatedClassifiedEmails));
+      setClassifiedEmails(updatedClassifiedEmails);
+      setEmails(updatedClassifiedEmails);
       setLoading(false);
     } catch (error) {
       console.error("Error classifying emails:", error);
+      if (error.message.includes("429")) {
+        setErrorMessage("API request limit reached. Please try again after 1 minute.");
+      } else {
+        setErrorMessage("An error occurred while classifying emails. Please try again.");
+      }
       setLoading(false);
     }
   };
 
+  const handleClassify = () => {
+    setErrorMessage(""); // Reset error message before classifying
+    classifyEmails();
+  };
+
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return (
@@ -165,6 +206,7 @@ const GetAllMails = ({ accessToken }) => {
               <button
                 onClick={() => setShowInput(true)}
                 className="text-sm font-semibold text-white border border-slate-400 px-4 py-2 rounded-md hover:bg-slate-800 transform ease-in duration-500"
+                disabled={!emails.length} // Disable button if no emails are fetched
               >
                 Classify Emails
               </button>
@@ -175,7 +217,7 @@ const GetAllMails = ({ accessToken }) => {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  classifyEmails();
+                  handleClassify();
                 }}
                 className="flex items-center gap-3 w-full"
               >
@@ -197,6 +239,9 @@ const GetAllMails = ({ accessToken }) => {
           )}
         </div>
       </div>
+      {errorMessage && (
+        <div className="text-red-500 font-bold mb-4">{errorMessage}</div>
+      )}
       <ul>
         {emails.map((email) => (
           <Emails
