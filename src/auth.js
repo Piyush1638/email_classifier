@@ -16,6 +16,7 @@ export const { handlers: { GET, POST }, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  
 
   callbacks: {
     async jwt({ token, account }) {
