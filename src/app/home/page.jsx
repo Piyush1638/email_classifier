@@ -13,7 +13,7 @@ const page = async () => {
     <main className="min-h-screen p-10 xl:py-24 flex flex-col gap-10 ">
       <h1 className="lg:text-3xl md:text-2xl text-lg font-bold text-center font-Gwendolyn">
         Welcome <span className="text-purple-500">{session?.user?.name}</span>{" "}
-        To <span className="text-purple-500">Email Classifier </span>
+        To <span className="text-purple-500">Email Classifier! </span>
       </h1>
       <div className="flex md:flex-row flex-col items-center justify-between gap-10 md:gap-0">
         <div className="flex items-center justify-center gap-2">
