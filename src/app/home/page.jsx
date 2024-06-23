@@ -10,7 +10,7 @@ const page = async () => {
   const session = await auth();
   if (!session?.user) redirect("/");
   return (
-    <main className="min-h-screen p-10 xl:py-24 flex flex-col gap-10 ">
+    <main className="min-h-screen p-10 xl:py-24 flex flex-col gap-10 bg-black">
       <h1 className="lg:text-3xl md:text-2xl text-lg font-bold text-center font-Gwendolyn">
         Welcome <span className="text-purple-500">{session?.user?.name}</span>{" "}
         To <span className="text-purple-500">Email Classifier! </span>

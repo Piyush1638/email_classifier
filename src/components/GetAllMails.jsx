@@ -42,7 +42,7 @@ const GetAllMails = ({ accessToken }) => {
         />
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 my-4 w-full">
           <p className="w-full">
-            Selected value:
+            Selected value:{" "}
             <span className="text-purple-500 font-bold">{rangeValue}</span>
           </p>
           <ApiKeyInput
